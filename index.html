@@ -19,29 +19,28 @@
   </style>  
 </head>
 <body>
-
+Sayani
 <div id="visdown-input">  
   
 # Bar Plot
   
 ```vis
-data: 
-  url: data/cars.csv
-mark: point
-encoding:
+data:
+  url: https://raw.githubusercontent.com/sayanisinha/visdown-template/master/data/notes.csv
+mark: line
+width: 800
+height: 500
+encoding: 
   x: 
-    field: kmpl
-    type: Q
-  y:   
-    field: price
-    type: Q
+    field: year
+    type: ordinal
+  y: 
+    field: number
+    type: quantitative
   color:
-    field: type
-    type: N
-  size:
-    field: bhp
-    type: Q
+    field: denom
 ```
+
     
 </div>
 <div id="visdown-output"></div>
