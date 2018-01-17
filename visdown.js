@@ -1,59 +1,48 @@
 window.onload = function () {
-	
-	//theme 
-	var config = {		
-		"range": {
-			"category": {"scheme": "dark2"},
-		}	
-	};
-	
 
-	// Start a new marked instance and renderer
-	var marked = window.marked;
-	var renderer = new marked.Renderer();
-	var counter = 0;
-	var specs = [];
-	var opts = {"mode": "vega-lite",
-	 						"renderer": "svg",
-							"actions": {export: false, source: false, editor: false},
-						  "config": config };
+	// Start Marked Renderer
+const renderer = new marked.Renderer();
+marked.setOptions({
+  renderer: renderer,
+  gfm: true,
+  tables: true,
+});
+
+const opts = {
+  "mode": "vega-lite",
+  "renderer": "svg",
+  "actions": {export: true, source: false, editor: false}
+};
 
 
-	// Render the ```vis as a div and save the json spec
-	renderer.code = function (code, lang, escaped) {
-		if (lang == "vis") {
-			jsonVis = YAML.parse(code);
-			specs.push(jsonVis);
-			counter++;
-			el = "#vis-" + counter;
-			htmlChart = "<div id='vis-" + counter + "'></div>";
-			return htmlChart;
-		}
-		var result = marked.Renderer.prototype.code.call(this, code, lang, escaped);
-		return result;
-	};
+//Render the vega-lite chart for each json spec
+function _render(element) {
+  let specs = element.getElementsByClassName('lang-vis')
+  let num = specs.length;
+  for (var i=0; i < num; i++) {
+    let el = "#vis-" + i;
+    let jsonSpec = YAML.parse(specs[i].textContent)
+    console.log(jsonSpec)
+    htmlString = "<div class='vega-embed' id='vis-" + i + "'></div>"
+    specs[i].parentNode.insertAdjacentHTML('beforebegin', htmlString);
+    specs[i].parentNode.style.display = 'none';
+    vegaEmbed(el, jsonSpec, opts);
+  };
+};
 
-	// Render the vega-lite chart for each json spec
-	vegaliteRender = function (err, content) {
-		for (var i=0; i < specs.length; i++) {
-			j = i + 1;
-			el = "#vis-" + j;
-			vega.embed(el, specs[i], opts);
-		}
-		return content;
-	};
+// Convert from Markdown to HTML
+let input = document.querySelector("#visdown-input");
+let output = document.querySelector("#visdown-output");
 
 
-	// Convert from Markdown to HTML
-	var input = document.querySelector("#visdown-input");
-	var output = document.querySelector("#visdown-output");
+function visdown(input, element) {
+  console.log('visdown');
+  let visdownText = input.textContent;
+  element.innerHTML = marked(visdownText);
+  _render(element);
+}
 
-	window.visdown = function () {
-		console.log('visdown');
-		var markdownText = input.innerHTML;
-		output.innerHTML = marked(markdownText, { renderer: renderer});
-		vegaliteRender();
-	}
-	visdown()
+
+ visdown(input, output)
 	
 }
