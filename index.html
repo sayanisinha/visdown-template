@@ -40,7 +40,7 @@ encoding:
   color:
     field: denom
 ```
-# Dot PLot
+# Dot Plot
     
 ```vis
 data:
@@ -57,8 +57,36 @@ encoding:
     type: quantitative
   color:
     field: denom
-```   
-
+``` 
+# Notes Plot
+    
+```vis
+width: 400
+height: 400
+data:
+  url: data/notes.csv
+mark: area
+encoding:
+  x:
+    timeUnit: year
+    field: year
+    type: temporal
+    axis:
+      format: "%Y"
+      labelAngle: 0
+      title: Year
+      titleFontSize: 12
+  y:
+    aggregate: sum
+    field: money
+    type: quantitative
+    axis:
+      title: Notes in Circulation (Value ₹ Billions)
+      titleFontSize: 12
+  color:
+    field: denom
+    type: nominal
+```
     
 </div>
 <div id="visdown-output"></div>
