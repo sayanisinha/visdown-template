@@ -87,7 +87,41 @@ encoding:
     field: denom
     type: nominal
 ```
+# Interactive notes diagram
+    <h1>slider interaction</h1>
     
+    ```vis
+width: 500
+height: 500
+data:
+  url: data/notes.csv
+transform:
+- filter: datum.year == cylyr_year
+selection:
+  cylyr:
+    type: single
+    fields:
+    - year
+    bind:
+      year:
+        input: range
+        min: 1977
+        max: 2015
+        step: 1
+    'on': click
+    resolve: global
+mark: line
+encoding:
+  x:
+    type: nominal
+    field: denom
+  y:
+    aggregate: sum
+    type: quantitative
+    field: number 
+```
+    <style>
+  body {background-color: orangered;}
 </div>
 <div id="visdown-output"></div>
 <script src="visdown.js"></script>
